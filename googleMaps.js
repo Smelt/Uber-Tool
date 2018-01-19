@@ -10,16 +10,14 @@ exports.geoCodeAddress = function (address1, address2) {
     //async.parallel(queryGeoCode(address1), queryGeoCode(address2));
 }
 
-var loc = await queryGeoCode('4217 Perry Hall Rd');
-console.log(loc); 
-console.log("middle layer");
-var loc2 = await queryGeoCode('66 Saint Nicholas Avenue');
-console.log(loc + ' ' + loc2);
+var promise =  queryGeoCode('4217 Perry Hall Rd');
+promise.then(function(location){
+    console.log(location);
+});
 
 
-
-async function queryGeoCode(address) {
-    return new Promise(location => {
+function queryGeoCode(address) {
+    return new Promise(function(resolve, reject){
         request({
             qs: {
                 'address': address,
@@ -30,11 +28,12 @@ async function queryGeoCode(address) {
         }, function (err, res, body) {
             if (err) {
                 console.log(err);
+                reject(err);
             }
             else {
                 var results = JSON.parse(body);
                 console.log(results.results[0].geometry.location);
-                return results.results[0].geometry.location;
+                resolve(results.results[0].geometry.location);
             }
         });
     })
