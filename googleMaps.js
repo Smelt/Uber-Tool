@@ -6,17 +6,29 @@ const apiKey = 'AIzaSyC0EThKVAaVkOIO47l21JFdmUeIEWEwBCA';
 
 //async.parallel(queryGeoCode('4217 Perry Hall Rd'),queryGeoCode('66 Saint Nicholas Avenue') );
 
-exports.geoCodeAddress = function (address1, address2) {
+exports.geoCodeAddress = function (starting, ending) {
+
+  //  let [starting_cords, ending_cords] = await Promise.all([queryGeoCode2(starting), queryGeoCode2(ending)]);
     //async.parallel(queryGeoCode(address1), queryGeoCode(address2));
 }
-
+/*
 var promise =  queryGeoCode('4217 Perry Hall Rd');
 var px = geo('4217 Perry Hall Rd');
 console.log(px);
 
 var location = queryGeoCode3('4217 Perry Hall Rd');
 console.log(location);
-
+*/
+var starting = '4217 Perry Hall Rd';
+var ending = '66 Saint Nicholas Avenue';
+simp(starting, ending);
+async function simp(starting,ending){
+    var starting_cords;
+    var ending_cords;
+ [starting_cords, ending_cords] = await Promise.all([queryGeoCode2(starting), queryGeoCode2(ending)]);
+console.log(starting_cords);
+console.log(ending_cords);
+}
 function queryGeoCode(address) {
     return new Promise(function(resolve, reject){
         request({
@@ -91,5 +103,6 @@ async function queryGeoCode3(address) {
         });
     })
     var loc = await x;
-    return loc;
+    var loc2 = await loc;
+    return loc2;
 }
