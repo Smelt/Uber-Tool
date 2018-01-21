@@ -6,22 +6,22 @@ const uberCaller = require('./uber.js');
 const twilioCaller = require('./twilio.js');
 const googleMapsCaller = require('./googleMaps.js');
 
-const startLatVal = '37.7752315';
-const startLongVal = '-122.418075';
-const endLongVal = '37.7752415';
-const endLatVal = '-122.518075';
+const starting_address = '175 Greenwich St, New York, NY 10006';
+const ending_address = '66 Saint Nicholas Avenue';
 
 
 var rule = new schedule.RecurrenceRule();
 //repeats 1st second of every minute
 rule.second = 1;
 
-var location = googleMapsCaller.geoCodeAddress('4217 Perry Hall Rd', '66 Saint Nicholas Avenue');
-console.log("location");
-console.log(location);
+execute();
 
-//schedule.scheduleJob(rule, uberCaller.queryUberAPICB(startLatVal, startLongVal, endLatVal, endLongVal));
+async function execute(){
+    let locationObj = await googleMapsCaller.geoCodeAddress(starting_address, ending_address);
+    let uberObj = await uberCaller.queryUberAPI(locationObj);
+    let twilioResponse = twilioCaller.sendMessage(uberObj);
 
+}
 
 
 
